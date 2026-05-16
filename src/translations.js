@@ -804,7 +804,7 @@ export const translations = {
 }
 
 export const getCurrentLanguage = () => {
-  return localStorage.getItem('language') || 'en'
+  return localStorage.getItem('language') || 'ar'
 }
 
 export const setLanguage = (lang) => {

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="products-page min-h-screen bg-white dark:bg-gray-900">
     <PageHero
       :title="t('products.title')"
@@ -50,7 +50,7 @@
           <div>
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
               {{ t('products.allProducts') }}
-              <span v-if="selectedBrand" class="text-blue-600"> – {{ getSelectedBrandName() }}</span>
+              <span v-if="selectedBrand" class="text-blue-600"> - {{ getSelectedBrandName() }}</span>
             </h2>
             <p class="text-gray-600 dark:text-gray-400 mt-1">
               {{ filteredProducts.length }} {{ t('products.products') }}
@@ -154,7 +154,7 @@
                 v-model="quoteForm.email"
                 type="email"
                 required
-                class="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text:white focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900/40 focus:border-blue-500 outline-none"
+                class="w-full px-3 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900/40 focus:border-blue-500 outline-none"
                 :placeholder="t('products.enterEmail')"
               />
             </div>
@@ -221,6 +221,13 @@
                 {{ t('products.cancel') }}
               </button>
             </div>
+
+            <div
+              v-if="quoteStatusMessage"
+              class="rounded-xl border border-green-200 bg-green-50 p-3 text-sm font-medium text-green-800"
+            >
+              {{ quoteStatusMessage }}
+            </div>
           </form>
         </div>
       </div>
@@ -277,6 +284,7 @@ const selectedBrand = ref(null)
 const showQuoteModal = ref(false)
 const selectedProduct = ref(null)
 const isSubmitting = ref(false)
+const quoteStatusMessage = ref('')
 
 const quoteForm = ref({
   name: '',
@@ -321,26 +329,26 @@ const allProducts = computed(() => {
 function getProductDisplayName(imageUrl) {
   if (!imageUrl) return ''
   const file = imageUrl.split('/').pop().split('.')[0]
-  // Example: ABB1 => ABB منتج رقم 1
   const match = file.match(/^([A-Z]+)(\d+)$/)
   if (match) {
-    return `${match[1]} منتج رقم ${match[2]}`
+    return currentLanguage.value === 'ar'
+      ? `${match[1]} منتج رقم ${match[2]}`
+      : `${match[1]} Product ${match[2]}`
   }
   return file
 }
-
 // Helper to generate product details from image filename
 function getProductDetails(imageUrl) {
   if (!imageUrl) return ''
   const file = imageUrl.split('/').pop().split('.')[0]
-  // Example: ABB1 => تفاصيل المنتج ABB رقم 1
   const match = file.match(/^([A-Z]+)(\d+)$/)
   if (match) {
-    return `تفاصيل المنتج من شركة ${match[1]} رقم ${match[2]}`
+    return currentLanguage.value === 'ar'
+      ? `تفاصيل المنتج من شركة ${match[1]} رقم ${match[2]}`
+      : `Product details from ${match[1]} item ${match[2]}`
   }
-  return 'منتج كهربائي عالي الجودة'
+  return currentLanguage.value === 'ar' ? 'منتج كهربائي عالي الجودة' : 'High-quality electrical product'
 }
-
 const filteredProducts = computed(() => {
   if (!selectedBrand.value) return allProducts.value
   return allProducts.value.filter(product => product.manufacturer.toLowerCase() === selectedBrand.value)
@@ -358,6 +366,7 @@ const getSelectedBrandName = () => {
 const requestQuote = (product) => {
   selectedProduct.value = product
   showQuoteModal.value = true
+  quoteStatusMessage.value = ''
   quoteForm.value = {
     name: '',
     email: '',
@@ -368,21 +377,18 @@ const requestQuote = (product) => {
 }
 
 const viewDetails = (product) => {
-  // eslint-disable-next-line no-console
-  console.log('View details for:', product)
+  requestQuote(product)
 }
 
 const submitQuote = async () => {
   isSubmitting.value = true
+  quoteStatusMessage.value = ''
   await new Promise(resolve => setTimeout(resolve, 1500))
-  // eslint-disable-next-line no-console
-  console.log('Quote request submitted:', {
-    product: selectedProduct.value,
-    ...quoteForm.value
-  })
   isSubmitting.value = false
-  showQuoteModal.value = false
-  alert(t('products.quoteSubmitted'))
+  quoteStatusMessage.value = t('products.quoteSubmitted')
+  setTimeout(() => {
+    showQuoteModal.value = false
+  }, 900)
 }
 </script>
 
@@ -400,3 +406,4 @@ const submitQuote = async () => {
   overflow: hidden;
 }
 </style>
+

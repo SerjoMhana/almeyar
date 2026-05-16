@@ -260,6 +260,14 @@
                     </svg>
                     {{ isSubmitting ? t('training.submitting') : t('training.submitRegistration') }}
                   </button>
+
+                  <div
+                    v-if="statusMessage"
+                    class="rounded-2xl border p-4 text-sm font-medium"
+                    :class="status === 'success' ? 'border-green-200 bg-green-50 text-green-800' : 'border-red-200 bg-red-50 text-red-800'"
+                  >
+                    {{ statusMessage }}
+                  </div>
                 </form>
               </div>
             </div>
@@ -328,6 +336,8 @@ const imageModules = import.meta.glob('../assets/*.jpeg', { eager: true, query: 
 const assetImages = computed(() => Object.values(imageModules).filter(Boolean))
 
 const isSubmitting = ref(false)
+const status = ref(null)
+const statusMessage = ref('')
 
 const registrationForm = ref({
   name: '',
@@ -416,9 +426,9 @@ const selectCourse = (course) => {
 
 const submitRegistration = async () => {
   isSubmitting.value = true
+  status.value = null
+  statusMessage.value = ''
   await new Promise(resolve => setTimeout(resolve, 1200))
-  // eslint-disable-next-line no-console
-  console.log('Registration submitted:', registrationForm.value)
   isSubmitting.value = false
 
   registrationForm.value = {
@@ -430,7 +440,8 @@ const submitRegistration = async () => {
     message: ''
   }
 
-  alert(t('training.registrationSuccess'))
+  status.value = 'success'
+  statusMessage.value = t('training.registrationSuccess')
 }
 </script>
 

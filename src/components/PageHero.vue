@@ -5,6 +5,7 @@
         :src="image"
         :alt="title"
         class="w-full h-full object-cover scale-slow"
+        fetchpriority="high"
       />
       <!-- Modern gradients for better text readability and aesthetics -->
       <div class="absolute inset-0 bg-gradient-to-t from-gray-900/70 via-gray-900/30 to-black/10"></div>

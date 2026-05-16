@@ -1,10 +1,14 @@
 <template>
   <nav class="bg-white/95 backdrop-blur-md fixed w-full z-50 top-0 start-0 border-b border-gray-100 shadow-sm transition-all duration-300">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-6 py-4">
-      <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse group">
-        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 transition-transform duration-300 group-hover:scale-105" alt="Flowbite Logo" />
-        <span class="self-center text-2xl text-gray-900 font-bold whitespace-nowrap tracking-tight">Flowbite</span>
-      </a>
+      <router-link to="/" class="flex items-center gap-3 group" @click="closeMobileMenu">
+        <span class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white font-black shadow-lg shadow-blue-600/20 transition-transform duration-300 group-hover:-translate-y-0.5">
+          M
+        </span>
+        <span class="self-center text-lg sm:text-xl text-gray-900 font-bold whitespace-nowrap tracking-tight">
+          {{ brandName }}
+        </span>
+      </router-link>
       
       <div class="flex items-center md:order-2 space-x-3 md:space-x-4 rtl:space-x-reverse">
         <LanguageSwitcher 
@@ -13,11 +17,10 @@
         />
         
         <button 
-          data-collapse-toggle="navbar-language" 
           type="button" 
           class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors" 
           aria-controls="navbar-language" 
-          aria-expanded="false"
+          :aria-expanded="String(isMobileMenuOpen)"
           @click="toggleMobileMenu"
         >
           <span class="sr-only">Open main menu</span>
@@ -32,7 +35,7 @@
         class="items-center justify-between w-full md:flex md:w-auto md:order-1" 
         id="navbar-language"
       >
-        <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-xl bg-gray-50 md:flex-row md:gap-8 md:mt-0 md:border-0 md:bg-transparent">
+        <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-xl bg-gray-50 shadow-lg md:shadow-none md:flex-row md:gap-8 md:mt-0 md:border-0 md:bg-transparent">
           <li>
             <router-link 
               to="/" 
@@ -139,13 +142,12 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
 import LanguageSwitcher from './LanguageSwitcher.vue'
 import { translations, getCurrentLanguage, setLanguage } from '../translations'
 
-const route = useRoute()
 const isMobileMenuOpen = ref(false)
 const currentLanguage = ref(getCurrentLanguage())
+const brandName = computed(() => currentLanguage.value === 'ar' ? 'المعيار المتميز' : 'Almeyar')
 
 const t = (key) => {
   const keys = key.split('.')

@@ -277,7 +277,6 @@ const submitMessage = async () => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500))
     
-    console.log('Message submitted:', contactForm.value)
     status.value = 'success'
     statusMessage.value = t('contact.success')
     
@@ -289,7 +288,6 @@ const submitMessage = async () => {
       message: ''
     }
   } catch (error) {
-    console.error('Error sending message:', error)
     status.value = 'error'
     statusMessage.value = t('contact.error')
   } finally {

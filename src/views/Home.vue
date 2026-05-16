@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="home-page">
     <!-- Premium Modern Animated Hero Section -->
     <section class="hero-section relative min-h-[90vh] flex items-center overflow-hidden bg-gray-900">
@@ -14,6 +14,8 @@
           :src="image"
           alt="Electromechanical Services"
           class="w-full h-full object-cover scale-animate"
+          :loading="index === 0 ? 'eager' : 'lazy'"
+          :fetchpriority="index === 0 ? 'high' : 'auto'"
         />
       </div>
 
@@ -76,8 +78,8 @@
                   <svg class="w-7 h-7 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 </div>
                 <div>
-                  <h4 class="text-white font-bold text-xl">{{ t('home.yearsExperience') || 'خبرة طويلة' }}</h4>
-                  <p class="text-blue-200 text-sm font-medium">15+ سنوات</p>
+                  <h4 class="text-white font-bold text-xl">{{ t('home.yearsExperience') || 'ط®ط¨ط±ط© ط·ظˆظٹظ„ط©' }}</h4>
+                  <p class="text-blue-200 text-sm font-medium">{{ currentLanguage === 'ar' ? '15+ سنوات' : '15+ years' }}</p>
                 </div>
               </div>
               <div class="w-full h-2.5 bg-white/10 rounded-full overflow-hidden shadow-inner">
@@ -94,7 +96,7 @@
                 </div>
                 <div>
                   <h4 class="text-white font-bold text-lg leading-tight">{{ t('home.projectsCompleted') || 'مشاريع منجزة' }}</h4>
-                  <p class="text-indigo-200 text-sm font-medium mt-1">مكتملة بنجاح</p>
+                  <p class="text-indigo-200 text-sm font-medium mt-1">{{ currentLanguage === 'ar' ? 'مكتملة بنجاح' : 'completed successfully' }}</p>
                 </div>
               </div>
             </div>
@@ -116,7 +118,7 @@
       </div>
     </section>
 
-    <!-- About Section - شبكة صور من أصولنا -->
+    <!-- About Section - ط´ط¨ظƒط© طµظˆط± ظ…ظ† ط£طµظˆظ„ظ†ط§ -->
     <section id="about" class="py-20 lg:py-28 bg-white dark:bg-gray-900 relative">
       <div class="max-w-screen-xl mx-auto px-4">
         <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -175,7 +177,7 @@
       </div>
     </section>
 
-    <!-- Services Section - كروت بخلفيات صور -->
+    <!-- Services Section - ظƒط±ظˆطھ ط¨ط®ظ„ظپظٹط§طھ طµظˆط± -->
     <section class="py-20 lg:py-28 bg-gray-50 dark:bg-gray-800/50">
       <div class="max-w-screen-xl mx-auto px-4">
         <div class="text-center mb-14">
@@ -213,7 +215,7 @@
       </div>
     </section>
 
-    <!-- Latest Projects - شبكة مشاريع بصور الأصول -->
+    <!-- Latest Projects - ط´ط¨ظƒط© ظ…ط´ط§ط±ظٹط¹ ط¨طµظˆط± ط§ظ„ط£طµظˆظ„ -->
     <section class="py-20 lg:py-28 bg-white dark:bg-gray-900">
       <div class="max-w-screen-xl mx-auto px-4">
         <div class="text-center mb-14">
@@ -258,7 +260,7 @@
       </div>
     </section>
 
-    <!-- Gallery Strip - شريط معاينة من المعرض -->
+    <!-- Gallery Strip - ط´ط±ظٹط· ظ…ط¹ط§ظٹظ†ط© ظ…ظ† ط§ظ„ظ…ط¹ط±ط¶ -->
     <section class="py-12 bg-gray-50 dark:bg-gray-800/50 overflow-hidden">
       <div class="max-w-screen-xl mx-auto px-4 mb-8">
         <div class="flex flex-wrap items-center justify-between gap-4">
@@ -333,7 +335,7 @@ const t = (key) => {
   return value || key
 }
 
-// تحميل صور من مجلد assets
+// طھط­ظ…ظٹظ„ طµظˆط± ظ…ظ† ظ…ط¬ظ„ط¯ assets
 const imageModules = import.meta.glob('../assets/*.jpeg', { eager: true, query: '?url', import: 'default' })
 const assetImages = computed(() => Object.values(imageModules).filter(Boolean))
 
@@ -487,3 +489,5 @@ const partners = computed(() => [
   to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 </style>
+
+
